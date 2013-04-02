@@ -4,40 +4,96 @@
 </head>
 <body>
 	<script src="jquery-1.9.1.js"></script>
+	<script src="underscore-min.js"></script>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <!--...........................................................................-->
-	<center><table border=3 >
+	<center><br><table>
 		<tr>
-			<td><img src="1.jpg"></td>
-			<td><img src="2.jpg"></td>
-			<td><img src="3.jpg"></td>
-			<td><img src="4.jpg"></td>
+			<td><div id='a0'></div></td>
+			<td><div id='a1'></div></td>
+			<td><div id='a2'></div></td>
+			<td><div id='a3'></div></td>
 		</tr>	
 		<tr>
-			<td><img src="4.jpg"></td>
-			<td><img src="3.jpg"></td>
-			<td><img src="2.jpg"></td>
-			<td><img src="1.jpg"></td>
-		</tr>	
-		<tr>
-			<td><img src="5.jpg"></td>
-			<td><img src="5.jpg"></td>
-			<td><img src="6.jpg"></td>
-			<td><img src="7.jpg"></td>
+			<td><div id='a4'></div></td>
+			<td><div id='a5'></div></td>
+			<td><div id='a6'></div></td>
+			<td><div id='a7'></div></td>
 		</tr>
 		<tr>
-			<td><img src="8.jpg"></td>
-			<td><img src="8.jpg"></td>
-			<td><img src="7.jpg"></td>
-			<td><img src="6.jpg"></td>
-		</tr>	
-	</table>
+			<td><div id='a8'></div></td>
+			<td><div id='a9'></div></td>
+			<td><div id='a10'></div></td>
+			<td><div id='a11'></div></td>
+		</tr>
+		<tr>
+			<td><div id='a12'></div></td>
+			<td><div id='a13'></div></td>
+			<td><div id='a14'></div></td>
+			<td><div id='a15'></div></td>
+		</tr>
+	</table><br>
 	</center>	
 
-
-
-
-
+	<script>
+	$(document).ready(function(){
+		var sc = 100
+		var x = [1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8]
+		var y = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		var z = [0,16,16]
+		x=_.shuffle(x)
+		for(i=0;i<16;i++){
+			$('#a'+i).html('<button type=button id="b'+i+'"><img src="trans.png"></button>')
+		}
+		$('#b0').click(function(){ent(0)})
+		$('#b1').click(function(){ent(1)})
+		$('#b2').click(function(){ent(2)})
+		$('#b3').click(function(){ent(3)})
+		$('#b4').click(function(){ent(4)})
+		$('#b5').click(function(){ent(5)})
+		$('#b6').click(function(){ent(6)})
+		$('#b7').click(function(){ent(7)})
+		$('#b8').click(function(){ent(8)})
+		$('#b9').click(function(){ent(9)})
+		$('#b10').click(function(){ent(10)})
+		$('#b11').click(function(){ent(11)})
+		$('#b12').click(function(){ent(12)})
+		$('#b13').click(function(){ent(13)})
+		$('#b14').click(function(){ent(14)})
+		$('#b15').click(function(){ent(15)})
+		function ent(i){
+			if(z[0]<2){
+				if(y[i]==0){
+					$('#b'+i).html('<img src="'+x[i]+'.png">')
+					y[i]=1
+					z[0]++
+					z[z[0]]=i
+					if(z[0]==2){
+						if(x[z[1]]==x[z[2]]){
+							y[z[1]]=1
+							y[z[2]]=1
+							$('#b'+z[1]).html('<img src="'+x[z[1]]+'x.png">')
+							$('#b'+z[2]).html('<img src="'+x[z[2]]+'x.png">')
+							z[0]=0
+							z[1]=16
+							z[2]=16
+						}else{
+							setTimeout(function(){
+								$('#b'+z[1]).html('<img src="trans.png">')
+								$('#b'+z[2]).html('<img src="trans.png">')
+								y[z[1]]=0
+								y[z[2]]=0
+								z[0]=0
+								z[1]=16
+								z[2]=16
+							},300);
+						}
+					}
+				}
+			}
+		}
+	})
+	</script>
 
 
 
