@@ -16,9 +16,15 @@
 		<table id='tab'></table><br>
 		<div id='score'></div><br>
 		<button class="btn" type="button" id="re">Restart</button>
+		<div id='load'><div>
 	</div>
 	<script>
 	$(document).ready(function(){
+		for(i=0;i<10;i++){
+			$('#load').html('<img src="'+i+'r.png">')
+			$('#load').html('<img src="'+i+'g.png">')
+		}
+		$('#load').html('<img src="tr.png">')
 		var sc = 0
 		var rn = 4
 		var cn = 4
