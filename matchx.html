@@ -1,0 +1,146 @@
+<html>
+<head>
+	<title>Match to Match </title>
+</head>
+<script src="jquery-1.9.1.js"></script>
+<script src="underscore-min.js"></script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<body>
+	<div align=right ><a href="http://boaonoko.github.com/sandbox/">back to index</a></div>
+	<div align=center><br>
+		<div>
+			<input class="span2" id="r" type="number" placeholder="row">
+			<input class="span2" id="c" type="number" placeholder="column">
+    		<button class="btn" type="button" id="b">Generate</button>
+		</div><br>
+		<table id='tab'></table><br>
+		<div id='score'></div><br>
+		<button class="btn" type="button" id="re">Restart</button>
+		<div id='load'><div>
+	</div>
+	<script>
+	$(document).ready(function(){
+		for(i=0;i<10;i++){
+			$('#load').html('<img src="'+i+'r.png">')
+			$('#load').html('<img src="'+i+'g.png">')
+		}
+		$('#load').html('<img src="tr.png">')
+		var sc = 0
+		var rn = 4
+		var cn = 4
+		var max = rn*cn
+		var x = [1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8]
+		var y = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		var z = [0,-1,-1]
+		table(rn,cn)
+		create(rn*cn)
+		$('#b').click(function(){
+			var rnm = Math.floor($('#r').val())
+			var cnm = Math.floor($('#c').val())
+			if(rnm%2==1&&cnm%2==1){
+				if(rnm!=1)rnm--
+					else if(cnm==1)cnm++
+						else cnm--
+			}
+			var mx = rnm*cnm
+			if(mx<201){
+				table(rnm,cnm)
+				create(mx)
+				$('#r').val(rnm)
+				$('#c').val(cnm)
+				max=mx
+			}
+		})
+		$('#re').click(function(){
+			create(max)
+		})
+		function table(rn,cn){
+			var tbstr = ""
+			for (i=0;i<rn;i++){
+				tbstr = tbstr + '<tr>'
+				for (j=0;j<cn;j++){
+					tbstr = tbstr + "<td><div id='a"+(i*cn+j)+"'></div></td>"
+				}
+				tbstr = tbstr + '</tr>'
+			}
+			$('#tab').html(tbstr)
+		}
+		function create(max){
+			x=[0]
+			for(i=0;i<max;i++){
+				x[i]=(i%(Math.ceil(max/2)))+1
+				y[i]=0
+			}
+			z=[0,-1,-1]
+			x=_.shuffle(x)
+			sc=0
+			$('#score').html('<h1>Score : 0</h1>')
+			for(i=0;i<max;i++){
+				if(max<20){
+					$('#a'+i).html('<button type=button id="b'+i+'"><img src="tr.png"></button>')
+				}else{
+					$('#a'+i).html('<button type=button id="b'+i+'"><img src="tr.png"> <img src="tr.png"></button>')
+				}
+				bind($('#b'+i),i)
+			}
+		}
+		function bind($q,i){
+			$q.click(function(){
+				if(z[0]<2){
+					if(y[i]==0){
+						sc--
+						$('#score').html("<h1>Score : "+sc+"</h1>")
+						if(x[i]>9){
+							$('#b'+i).html('<img src="'+(Math.floor(x[i]%100/10))+'r.png"> <img src="'+(x[i]%10)+'r.png">')
+						}else if(max<20){
+							$('#b'+i).html('<img src="'+(x[i]%10)+'r.png">')
+						}else {
+							$('#b'+i).html('<img src="tr.png"> <img src="'+(x[i]%10)+'r.png">')
+						}
+						y[i]=1
+						z[0]++
+						z[z[0]]=i
+						if(z[0]==2){
+							if(x[z[1]]==x[z[2]]){
+								y[z[1]]=1
+								y[z[2]]=1
+								if(x[z[1]]>9){
+									$('#b'+z[1]).html('<img src="'+(Math.floor(x[z[1]]%100/10))+'g.png"> <img src="'+(x[z[1]]%10)+'g.png">')
+								}else if(max<20){
+									$('#b'+z[1]).html('<img src="'+(x[z[1]]%10)+'g.png">')
+								}else {
+									$('#b'+z[1]).html('<img src="tr.png"> <img src="'+(x[z[1]]%10)+'g.png">')
+								}
+								if(x[z[2]]>9){
+									$('#b'+z[2]).html('<img src="'+(Math.floor(x[z[2]]%100/10))+'g.png"> <img src="'+(x[z[2]]%10)+'g.png">')
+								}else if(max<20){
+									$('#b'+z[2]).html('<img src="'+(x[z[2]]%10)+'g.png">')
+								}else {
+									$('#b'+z[2]).html('<img src="tr.png"> <img src="'+(x[z[2]]%10)+'g.png">')
+								}
+								z=[0,-1,-1]
+								sc+=10
+								$('#score').html("<h1>Score : "+sc+"</h1>")
+							}else{
+								setTimeout(function(){
+									if(max<20){
+										$('#b'+z[1]).html('<img src="tr.png">')
+										$('#b'+z[2]).html('<img src="tr.png">')
+									}else {
+										$('#b'+z[1]).html('<img src="tr.png"> <img src="tr.png">')
+										$('#b'+z[2]).html('<img src="tr.png"> <img src="tr.png">')
+									}
+									y[z[1]]=0
+									y[z[2]]=0
+									z=[0,-1,-1]
+								},300);
+							}
+						}
+					}
+				}
+			})
+		}
+	})
+	</script>
+</body>
+</html>
